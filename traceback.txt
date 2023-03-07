@@ -1,0 +1,43 @@
+﻿I'm sorry, but an uncaught exception occurred.
+
+While running game code:
+  File "game/classes.rpy", line 1, in script
+    init python:
+  File "game/classes.rpy", line 1, in script
+    init python:
+  File "game/classes.rpy", line 58, in <module>
+    player = Player()
+  File "game/classes.rpy", line 28, in __init__
+    super().__init__("The Guy", player_max_hp, player_max_hp)
+  File "game/classes.rpy", line 9, in __init__
+    self.damage
+AttributeError: 'Player' object has no attribute 'damage'
+
+-- Full Traceback ------------------------------------------------------------
+
+Full traceback:
+  File "C:\Users\Student\Desktop\Renpy\renpy-8.0.3-sdk\renpy\bootstrap.py", line 277, in bootstrap
+    renpy.main.main()
+  File "C:\Users\Student\Desktop\Renpy\renpy-8.0.3-sdk\renpy\main.py", line 558, in main
+    renpy.game.context().run(node)
+  File "game/classes.rpy", line 1, in script
+    init python:
+  File "/home/tom/ab/renpy-build/tmp/install.linux-x86_64/lib/python3.9/site-packages/future/utils/__init__.py", line 441, in raise_
+  File "game/classes.rpy", line 1, in script
+    init python:
+  File "C:\Users\Student\Desktop\Renpy\renpy-8.0.3-sdk\renpy\ast.py", line 1131, in execute
+    renpy.python.py_exec_bytecode(self.code.bytecode, self.hide, store=self.store)
+  File "C:\Users\Student\Desktop\Renpy\renpy-8.0.3-sdk\renpy\python.py", line 1061, in py_exec_bytecode
+    exec(bytecode, globals, locals)
+  File "game/classes.rpy", line 58, in <module>
+    player = Player()
+  File "game/classes.rpy", line 28, in __init__
+    super().__init__("The Guy", player_max_hp, player_max_hp)
+  File "game/classes.rpy", line 9, in __init__
+    self.damage
+AttributeError: 'Player' object has no attribute 'damage'
+
+Windows-10-10.0.19044 AMD64
+Ren'Py 8.0.3.22090809
+Diece 1.0
+Sat Mar  4 17:21:47 2023
