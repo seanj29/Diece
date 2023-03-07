@@ -6,17 +6,34 @@ init python:
             self.name = name
             self.hp = hp
             self.max_hp = max_hp
+            self.isDefending = False
             self.damage = 0
+            self.Defense = 0
+            
 
         def Attack(self, DiceNo, Actor):
-            diceA = Dice()
-            self.damage = diceA.roll(DiceNo)
+            dice = Dice()
+            self.isDefending = False
+            self.damage = dice.roll(DiceNo)
+            if Actor.isDefending:
+                self.damage = self.damage - Actor.Defense    
+            if self.damage < 0:
+                self.damage = 0
+                      
             Actor.TakeDamage(self.damage)
+           
 
         def TakeDamage(self, Damage):
             self.hp -= Damage
             if self.hp < 0:
                 self.hp = 0
+        
+        def Defend(self, DiceNo):
+            dice = Dice()
+            self.isDefending = True
+            self.Defense = dice.roll(DiceNo)
+
+
         
         
     
@@ -42,6 +59,7 @@ init python:
             self.frames = frames
             self.Actor = Actor
             self.image_dir = f"images/{self.Actor.name}/{self.AnimName}/{self.Actor.name} {self.AnimName}"
+            ## Path will need to be changed in shipped .exe binary
             root = os.path.join(os.getcwd(),"../Projects/Diece/game/images", self.Actor.name, self.AnimName)
             self.framesmax = len(os.listdir(root))
             
@@ -51,7 +69,6 @@ init python:
                 self.frames += 1
             else:
                 self.frames = 1
-
 
 
     player = Player()

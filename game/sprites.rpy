@@ -30,7 +30,7 @@ image Enemy Attack:
 image The Guy Attack:
     block:
         "[TheGuyAttack.image_dir] [TheGuyAttack.frames].png"
-        pause 0.15
+        pause 0.12
         function  TheGuyAttack.Animate
         repeat TheGuyAttack.framesmax
     "The Guy Idle"
@@ -41,3 +41,4 @@ image The Guy Walk:
         pause 0.15
         function  TheGuyWalk.Animate
         repeat
+       

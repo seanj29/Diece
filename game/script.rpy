@@ -14,11 +14,6 @@ label start:
         perspective True
          
 
-        
-        
-
-        
-
     # Show a background. This uses a placeholder by default, but you can
     # add a file (named either "bg room.png" or "bg room.jpg") to the
     # images directory to show it.
@@ -68,30 +63,48 @@ label start:
 
     show The Guy Idle:
         subpixel True
-        anchor (-225, -531) ypos 0 zpos 0.0 
+        anchor (-225, -500) ypos 0 zpos 0.0 
         zoom 6
         matrixtransform ScaleMatrix(1.0, 1.0, 1.0)*OffsetMatrix(0.0, 0.0, 0.0)*RotateMatrix(0.0, 0.0, 0.0)
        
 
-
         
+    
 
     while player.hp > 0:
 
         #Player Turn
-
-        menu:
+        $randomchance = Dice()
+        $rollvalue = randomchance.roll("d4")
+        menu OneVersusOne:
             "Attack":
                 $player.Attack("d4", enemy)
+                show The Guy Walk:
+                    ease 1 pos (1075, 0)
+                    "The Guy Attack"
+                    pause 1
+                    ease 1 pos(0,0)
+                pause 1
                 "You did [player.damage] damage to [enemy.name]!"
                 if enemy.hp == 0:
                     return
             "Defend":
-                "Awkward..."
-
+                $player.Defend("d4")
+                "You are defending for [player.Defense] damage"
         # Enemy Turn
-        $ enemy.Attack("d4", player)
-        "You got hit for [enemy.damage] damage??"
+        show The Guy Walk:
+            easein 0.2  pos(0,0)
+        if randomchance.roll("d4") < 2:
+            $enemy.Defend("d4")
+            "Enemy is defending for [enemy.Defense] damage"       
+        else:
+            $enemy.Attack("d4", player)
+            show Enemy Run:
+                ease 0.75 pos (-1075, 0)
+                "Enemy Attack"
+                pause 1.5
+                ease 1.5 pos(0,0)
+            "You got hit for [enemy.damage] damage??"
     "Damn...."        
 
 
