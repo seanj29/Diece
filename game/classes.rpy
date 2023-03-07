@@ -42,7 +42,7 @@ init python:
             self.frames = frames
             self.Actor = Actor
             self.image_dir = f"images/{self.Actor.name}/{self.AnimName}/{self.Actor.name} {self.AnimName}"
-            root = os.path.join("C:/Users/Student/Desktop/Renpy/Projects/Diece/game/images/", self.Actor.name, self.AnimName)
+            root = os.path.join(os.getcwd(),"../Projects/Diece/game/images", self.Actor.name, self.AnimName)
             self.framesmax = len(os.listdir(root))
             
 
