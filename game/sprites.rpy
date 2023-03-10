@@ -22,7 +22,7 @@ image Enemy Run:
 image Enemy Attack:
     block:
         "[EnemyAttack.image_dir] [EnemyAttack.frames].png"
-        pause 0.15
+        pause 0.05
         function  EnemyAttack.Animate
         repeat EnemyAttack.framesmax    
     "Enemy Idle"

@@ -3,12 +3,16 @@
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
 
-
+default usingRandBag = False
 
 ##define e = Character("Eileen")
 
 # The game starts here.
 label start:
+    $player.hp = player.max_hp
+    $enemy.hp = enemy.max_hp
+    $randomchance = Dice()
+    $randomchance.randbagUsed = usingRandBag
 
     camera:
         perspective True
@@ -74,8 +78,8 @@ label start:
     while player.hp > 0:
 
         #Player Turn
-        $randomchance = Dice()
-        $rollvalue = randomchance.roll("d4")
+        show Enemy Idle:
+            easein 0.2  pos(0,0)
         menu OneVersusOne:
             "Attack":
                 $player.Attack("d4", enemy)
@@ -92,7 +96,7 @@ label start:
                 $player.Defend("d4")
                 "You are defending for [player.Defense] damage"
         # Enemy Turn
-        show The Guy Walk:
+        show The Guy Idle:
             easein 0.2  pos(0,0)
         if randomchance.roll("d4") < 2:
             $enemy.Defend("d4")
