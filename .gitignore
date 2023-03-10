@@ -1,4 +1,4 @@
-
-*.rpyb
-*.txt
 *.save
+*.txt
+*.rpyc
+.vs
