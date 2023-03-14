@@ -82,13 +82,9 @@ label start:
             easein 0.2  pos(0,0)
         menu OneVersusOne:
             "Attack":
+                call Rolling
                 $player.Attack("d4", enemy)
-                show The Guy Walk:
-                    ease 1 pos (1075, 0)
-                    "The Guy Attack"
-                    pause 1
-                    ease 1 pos(0,0)
-                pause 1
+                call player_attack
                 "You did [player.damage] damage to [enemy.name]!"
                 if enemy.hp == 0:
                     return
@@ -124,7 +120,34 @@ label start:
 
     return
 
-label camera_playerattack:
+
+label player_attack:
     camera:
         perspective True
+
+    show The Guy Walk:
+        ease 1 pos (1075, 0)
+        "The Guy Attack"
+        pause 1
+        ease 1 pos(0,0)
+        pause 1 
     return
+
+label Rolling:
+    menu:
+        "D4":
+            "Uhhh"
+        "D6":
+            "Rolled a d6"
+        "D8":
+            "Rolled a d8"
+        "D10":
+            "Rolled a d10"
+        "D12":
+            "Rolled a d12"
+        "D20":
+            "Rolled a d20"
+    return
+
+
+

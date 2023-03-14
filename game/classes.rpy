@@ -69,7 +69,10 @@ init python:
                 self.frames += 1
             else:
                 self.frames = 1
-
+    
+    class StateMachine():
+        def __init__(self):
+            pass
 
     player = Player()
     enemy = Enemy()
