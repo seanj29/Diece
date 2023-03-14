@@ -1,4 +1,5 @@
-*.save
+/game/cache
+/game/saves
 *.txt
 *.rpyc
 .vs
