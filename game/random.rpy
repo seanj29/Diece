@@ -15,13 +15,18 @@ init python:
             }
             self.rolled = 0
             self.randbagUsed = False
+            self.crit = False;
         def roll(self, DiceNumber):
             randbag = RandomBags()
             if self.randbagUsed:
                 self.rolled = renpy.random.choice(randbag.returnBag(DiceNumber))
                 randbag.remove(self.rolled)
             else:
-                self.rolled = renpy.random.randint(1, self.DictDice[DiceNumber])          
+                self.rolled = renpy.random.randint(1, self.DictDice[DiceNumber])
+            if self.rolled == self.DictDice[DiceNumber]:
+                self.crit = True
+            else:
+                self.crit = False
             return self.rolled
         
     class RandomBags:

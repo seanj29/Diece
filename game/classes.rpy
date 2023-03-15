@@ -6,22 +6,29 @@ init python:
             self.name = name
             self.hp = hp
             self.max_hp = max_hp
-            self.isDefending = False
+            self.state = "None"
             self.damage = 0
             self.Defense = 0
+            self.initiative = 0
+            self.target = 0
             
 
-        def Attack(self, DiceNo, Actor):
+        def Attack(self, DiceNo):
             dice = Dice()
-            self.isDefending = False
             self.damage = dice.roll(DiceNo)
-            if Actor.isDefending:
-                self.damage = self.damage - Actor.Defense    
-            if self.damage < 0:
-                self.damage = 0
-                      
-            Actor.TakeDamage(self.damage)
-           
+            if self.target.state == "Defending" and dice.crit == False:
+                self.damage = self.damage - self.target.Defense
+                if self.damage < 0:
+                    self.damage = 0    
+            elif dice.crit:
+                self.target.TakeDamage(2 * self.damage)
+            else:
+                self.target.TakeDamage(self.damage)
+            return dice.rolled
+
+        def Target(self, Actor):
+            self.target = Actor
+
 
         def TakeDamage(self, Damage):
             self.hp -= Damage
@@ -30,8 +37,8 @@ init python:
         
         def Defend(self, DiceNo):
             dice = Dice()
-            self.isDefending = True
             self.Defense = dice.roll(DiceNo)
+            return dice.rolled
 
 
         
@@ -42,6 +49,13 @@ init python:
         def __init__(self):
             player_max_hp = 10
             super().__init__("The Guy", player_max_hp, player_max_hp)
+            self.initiative = 20
+
+        def roll(self, DiceNo):
+            if self.state == "Attacking":
+                return self.Attack(DiceNo)
+            elif self.state == "Defending":
+                return self.Defend(DiceNo)
             
             
     
@@ -50,6 +64,15 @@ init python:
         def __init__(self): 
             Enemy_max_hp = 6
             super().__init__("Enemy", Enemy_max_hp, Enemy_max_hp)
+            self.initiative = 1
+
+        def takeTurn(self):
+            dice = Dice()
+            if dice.roll("d4") > 4:
+                self.state = "Defending"     
+            else:
+                self.state = "Attacking"
+
 
 
     class Anim():
@@ -70,12 +93,49 @@ init python:
             else:
                 self.frames = 1
     
-    class StateMachine():
-        def __init__(self):
-            pass
+    # class TurnHandler():
+    #     def __init__(self, ActorArray):
+    #         self.ActorArray = ActorArray
+
+    #     def handle_turn(self, NumberValue):
+    #         for Actor in self.ActorArray:
+    #             if Actor.name == "Enemy":
+    #                     Actor.takeTurn()
+           
+    #         for Actor in self.ActorArray:                        
+    #             if Actor.state == "Defending":
+    #                 Actor.Defend(NumberValue)
+    #                 if Actor.name == "The Guy":
+    #                     narrator("You are defending for [player.Defense] damage")
+    #                 else:
+    #                     narrator("[enemy.name] defending for [enemy.Defense] damage")
+
+    #         for Actor in self.ActorArray:                
+    #             if Actor.state == "Attacking":
+    #                 Actor.Attack(NumberValue) 
+    #                 if Actor.name == "The Guy":
+    #                     narrator("You rolled [result] and did [player.damage] damage to [player.target.name]!")    
+    #                 else:
+    #                     narrator("You got hit for [enemy.damage] damage??")
+                    
+
+    #     def InitInitiative(self):
+    #         self.ActorArray.sort(key=lambda Actor: Actor.initiative, reverse = True)
+
+    #     def Add_turn(self, Actor):
+    #         self.ActorArray.append(Actor)
+    #         self.InitInitiative()
+    #     def Remove_turn(self, Actor):
+    #         self.ActorArray.remove(Actor)
+
+
+
+
+
 
     player = Player()
     enemy = Enemy()
+    # TurnHandler = TurnHandler([player, enemy])
     EnemyIdle = Anim("Idle", enemy, 1)
     TheGuyIdle = Anim("Idle", player, 1)
     EnemyDeath = Anim("Death", enemy, 1)

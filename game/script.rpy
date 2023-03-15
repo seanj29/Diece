@@ -11,8 +11,8 @@ default usingRandBag = False
 label start:
     $player.hp = player.max_hp
     $enemy.hp = enemy.max_hp
-    $randomchance = Dice()
-    $randomchance.randbagUsed = usingRandBag
+    $RollableDice = Dice()
+    $RollableDice.randbagUsed = usingRandBag
 
     camera:
         perspective True
@@ -75,37 +75,77 @@ label start:
         
     
 
-    while player.hp > 0:
+    while player.hp > 0 and enemy.hp > 0:
 
-        #Player Turn
-        show Enemy Idle:
-            easein 0.2  pos(0,0)
+        $player.Target(enemy)
+        $enemy.Target(player)
+        $enemy.takeTurn()
+        
         menu OneVersusOne:
             "Attack":
-                call Rolling
-                $player.Attack("d4", enemy)
-                call player_attack
-                "You did [player.damage] damage to [enemy.name]!"
-                if enemy.hp == 0:
-                    return
+                $player.state = "Attacking"
+                call Rolling 
+                # Conditions for who's turn is first, Defenders always have priority                 
+                if enemy.state == "Defending":
+                    $enemy.Defend(3)
+                    "[enemy.name] defending for [enemy.Defense] damage"
+                    call camreset
+                    call player_attack
+                    call camreset
+                    if enemy.hp == 0:
+                        "You win!"
+                        return     
+                else:
+                    if player.initiative > enemy.initiative:
+                        call player_attack
+                        call camreset
+                        if enemy.hp == 0:
+                            "You win!"
+                            return     
+                        call enemy_attack
+                        call camreset
+                        if player.hp == 0:
+                            "Damn...."
+                            return
+                    else:
+                        call enemy_attack
+                        call camreset
+                        if player.hp == 0:
+                            "Damn...."
+                            return
+                        call player_attack   
+                        call camreset
+                        if enemy.hp == 0:
+                            "You win!"
+                            return  
+                        
+             
+
+
             "Defend":
-                $player.Defend("d4")
-                "You are defending for [player.Defense] damage"
-        # Enemy Turn
-        show The Guy Idle:
-            easein 0.2  pos(0,0)
-        if randomchance.roll("d4") < 2:
-            $enemy.Defend("d4")
-            "Enemy is defending for [enemy.Defense] damage"       
-        else:
-            $enemy.Attack("d4", player)
-            show Enemy Run:
-                ease 0.75 pos (-1075, 0)
-                "Enemy Attack"
-                pause 1.5
-                ease 1.5 pos(0,0)
-            "You got hit for [enemy.damage] damage??"
-    "Damn...."        
+                # Same as above but this time Player is defending so also has prio
+                $player.state = "Defending"
+                call Rolling
+                if enemy.state == "Defending":
+                    if player.initiative > enemy.initiative:
+                        $player.Defend(result)
+                        "You are defending for [player.Defense] damage"
+                        $enemy.Defend("d4")
+                        "[enemy.name] defending for [enemy.Defense] damage"
+                    else:
+                        $enemy.Defend("d4")
+                        "[enemy.name] defending for [enemy.Defense] damage"
+                        $player.Defend(result)
+                        "You are defending for [player.Defense] damage"
+                else:
+                    $player.Defend(result)
+                    "You are defending for [player.Defense] damage" 
+                    call enemy_attack
+                    call camreset  
+                    if player.hp == 0:
+                            "Damn...."
+                            return  
+         
 
 
     # show eileen happy
@@ -117,8 +157,7 @@ label start:
     #e "Once you add a story, pictures, and music, you can release it to the world!"
 
     # This ends the game.
-
-    return
+return
 
 
 label player_attack:
@@ -130,24 +169,54 @@ label player_attack:
         "The Guy Attack"
         pause 1
         ease 1 pos(0,0)
-        pause 1 
-    return
+        pause 1  
+    
+    "You rolled [result] and did [player.damage] damage to [player.target.name]!"
+return
+
+label enemy_attack:
+    $enemy.Attack("d4")
+    camera:
+        perspective True
+        
+    show Enemy Run:
+        ease 0.75 pos (-1075, 0)
+        "Enemy Attack"
+        pause 1.5
+        ease 1.5 pos(0,0)
+        pause 1
+    "You got hit for [enemy.damage] damage??"
+return
+
+label camreset:
+
+    show Enemy Idle:
+        easein 0.2  pos(0,0)
+
+
+
+    show The Guy Idle:
+        easein 0.2  pos(0,0)
+       
+return
+
 
 label Rolling:
     menu:
         "D4":
-            "Uhhh"
+            $result = player.roll("d4")
         "D6":
-            "Rolled a d6"
+            $result = player.roll("d6")
         "D8":
-            "Rolled a d8"
+            $result = player.roll("d8")
         "D10":
-            "Rolled a d10"
+            $result = player.roll("d10")
         "D12":
-            "Rolled a d12"
+            $result = player.roll("d12")
         "D20":
-            "Rolled a d20"
-    return
+            $result = player.roll("d20") 
+return result
+    
 
 
 
