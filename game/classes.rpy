@@ -34,7 +34,7 @@ init python:
             self.hp -= Damage
             if self.hp < 0:
                 self.hp = 0
-        
+        #  todo #3 Defending disables dice @seanj29
         def Defend(self, DiceNo):
             dice = Dice()
             self.Defense = dice.roll(DiceNo)
