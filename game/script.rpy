@@ -11,8 +11,6 @@ default usingRandBag = False
 label start:
     $player.hp = player.max_hp
     $enemy.hp = enemy.max_hp
-    $RollableDice = Dice()
-    $RollableDice.randbagUsed = usingRandBag
 
     camera:
         perspective True
@@ -77,18 +75,19 @@ label start:
 
     while player.hp > 0 and enemy.hp > 0:
 
-        $player.Target(enemy)
-        $enemy.Target(player)
-        $enemy.takeTurn()
+     
+        
         
         menu OneVersusOne:
             "Attack":
                 $player.state = "Attacking"
+                $player.Target(enemy)
+                $enemy.Target(player)
+                $enemy.takeTurn()
                 call Rolling 
                 # Conditions for who's turn is first, Defenders always have priority                 
                 if enemy.state == "Defending":
-                    $enemy.Defend(3)
-                    "[enemy.name] defending for [enemy.Defense] damage"
+                    "[enemy.name] is defending for [enemy.Defense] damage"
                     call camreset
                     call player_attack
                     call camreset
@@ -125,20 +124,18 @@ label start:
             "Defend":
                 # Same as above but this time Player is defending so also has prio
                 $player.state = "Defending"
+                $player.Target(enemy)
+                $enemy.Target(player)
+                $enemy.takeTurn()
                 call Rolling
                 if enemy.state == "Defending":
                     if player.initiative > enemy.initiative:
-                        $player.Defend(result)
                         "You are defending for [player.Defense] damage"
-                        $enemy.Defend("d4")
-                        "[enemy.name] defending for [enemy.Defense] damage"
+                        "[enemy.name] is defending for [enemy.Defense] damage"
                     else:
-                        $enemy.Defend("d4")
-                        "[enemy.name] defending for [enemy.Defense] damage"
-                        $player.Defend(result)
+                        "[enemy.name] is defending for [enemy.Defense] damage"
                         "You are defending for [player.Defense] damage"
                 else:
-                    $player.Defend(result)
                     "You are defending for [player.Defense] damage" 
                     call enemy_attack
                     call camreset  
@@ -185,6 +182,7 @@ label enemy_attack:
         pause 1.5
         ease 1.5 pos(0,0)
         pause 1
+ 
     "You got hit for [enemy.damage] damage??"
 return
 
