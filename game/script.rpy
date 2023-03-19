@@ -74,7 +74,7 @@ label start:
     
 
     while player.hp > 0 and enemy.hp > 0:
-
+        $RoundCounter += 1
      
         
         
@@ -201,17 +201,17 @@ return
 
 label Rolling:
     menu:
-        "D4":
+        "D4" if player.DiceisEnabled["d4"]:
             $result = player.roll("d4")
-        "D6":
+        "D6" if player.DiceisEnabled["d6"]:
             $result = player.roll("d6")
-        "D8":
+        "D8" if player.DiceisEnabled["d8"]:
             $result = player.roll("d8")
-        "D10":
+        "D10" if player.DiceisEnabled["d10"]:
             $result = player.roll("d10")
-        "D12":
+        "D12" if player.DiceisEnabled["d12"]:
             $result = player.roll("d12")
-        "D20":
+        "D20" if player.DiceisEnabled["d20"]:
             $result = player.roll("d20") 
 return result
     

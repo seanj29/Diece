@@ -1,6 +1,6 @@
 init python:
     import os
-
+    RoundCounter = 0
     class Actor:
         def __init__(self, name, hp = 20, max_hp = 20):
             self.name = name
@@ -11,10 +11,20 @@ init python:
             self.Defense = 0
             self.initiative = 0
             self.target = "None"
+            self.isOverHealed = False
+            self.DiceisEnabled = {
+                "d4" : True,
+                "d6" : True,
+                "d8" : True,
+                "d10" : False,
+                "d12" : False,
+                "d20" : False,
+            }
             
 
-        def Attack(self, DiceNo):
+        def Attack(self, DiceNo, target = None):
             dice = Dice()
+            target = self.target
             original_roll = dice.roll(DiceNo)
             self.damage = original_roll
             if self.target.state == "Defending" and dice.crit == False:
@@ -23,8 +33,7 @@ init python:
                     self.damage = 0    
             elif dice.crit == True:
                 self.damage += self.CriticallyAttack(DiceNo, dice)
-
-            self.target.TakeDamage(self.damage)
+            target.TakeDamage(self.damage)
             return original_roll
         
         def CriticallyAttack(self, DiceNo, DiceThatCrit):
@@ -47,11 +56,28 @@ init python:
         #  todo #3 Defending disables dice @seanj29 
         def Defend(self, DiceNo):
             dice = Dice()
-            self.Defense = dice.roll(DiceNo)
+            original_roll = dice.roll(DiceNo)
+            self.Defense = original_roll
             if dice.crit == True:
-                self.hp += self.Defense//2
+                self.Heal(original_roll//2)
+            self.DisableDice(DiceNo)
+            return original_roll
+        
+        def DisableDice(self, DiceNo):
+            self.DiceisEnabled[DiceNo] = False
+    
+        def EnableDice(self, DiceNo):
+            self.DiceisEnabled[DiceNo] = True
 
-            return dice.rolled
+        def Heal (self, amount, target = None):
+            target = self
+            target.hp += amount
+            if target.hp > target.max_hp:
+                self.isOverHealed = True
+            return amount
+
+
+
 
 
         

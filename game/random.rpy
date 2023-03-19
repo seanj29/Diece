@@ -5,13 +5,13 @@ init python:
                 cls.instance = super(Dice, cls).__new__(cls)
             return cls.instance
         def __init__(self):
-            self.DictDice = {
-            "d4" : 4,
-            "d6" : 6,
-            "d8" : 8,
-            "d10" : 10,
-            "d12" : 12,
-            "d20" : 20,
+            self.DiceDict = {
+                "d4" : 4,
+                "d6" : 6,
+                "d8" : 8,
+                "d10" : 10,
+                "d12" : 12,
+                "d20" : 20,
             }
             self.rolled = 0
             self.randbagUsed = False
@@ -19,19 +19,19 @@ init python:
         def roll(self, DiceNumber):
             randbag = RandomBags()
             if self.randbagUsed:
-                self.rolled = renpy.random.choice(randbag.returnBag(DiceNumber))
+                self.rolled = renpy.random.choice(randbag.returnBag(self.DiceDict[DiceNumber]))
                 randbag.remove(self.rolled)
             else:
-                self.rolled = renpy.random.randint(1, self.DictDice[DiceNumber])
+                self.rolled = renpy.random.randint(1, self.DiceDict[DiceNumber])
                 
-            if self.rolled == self.DictDice[DiceNumber]:
+            if self.rolled == self.DiceDict[DiceNumber]:
                 self.crit = True
             else:
                 self.crit = False
             return self.rolled
         
         def getNext(self, DiceNumber):
-            tempD = iter(self.DictDice)
+            tempD = iter(self.DiceDict)
             for key in tempD:
                 if key == DiceNumber:
                     return next(tempD, 0)
@@ -72,6 +72,7 @@ init python:
                 if not self.bags[self.BagDice[DiceNumber]]:
                     self.bags.insert(self.BagDice[DiceNumber],2 * list(range(1, (DiceNumber+1))))
 
+        
 
             
 
