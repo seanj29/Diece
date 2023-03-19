@@ -10,21 +10,31 @@ init python:
             self.damage = 0
             self.Defense = 0
             self.initiative = 0
-            self.target = 0
+            self.target = "None"
             
 
         def Attack(self, DiceNo):
             dice = Dice()
-            self.damage = dice.roll(DiceNo)
+            original_roll = dice.roll(DiceNo)
+            self.damage = original_roll
             if self.target.state == "Defending" and dice.crit == False:
-                self.damage = self.damage - self.target.Defense
+                self.damage -= self.target.Defense
                 if self.damage < 0:
                     self.damage = 0    
-            elif dice.crit:
-                self.target.TakeDamage(2 * self.damage)
-            else:
-                self.target.TakeDamage(self.damage)
-            return dice.rolled
+            elif dice.crit == True:
+                self.damage += self.CriticallyAttack(DiceNo, dice)
+
+            self.target.TakeDamage(self.damage)
+            return original_roll
+        
+        def CriticallyAttack(self, DiceNo, DiceThatCrit):
+            next = DiceThatCrit.getNext(DiceNo)
+            while next != None:
+                res = DiceThatCrit.roll(next)
+                if DiceThatCrit.crit == True:
+                    res += self.CriticallyAttack(DiceNo, DiceThatCrit)
+                return res
+        
 
         def Target(self, Actor):
             self.target = Actor
@@ -34,10 +44,13 @@ init python:
             self.hp -= Damage
             if self.hp < 0:
                 self.hp = 0
-        #  todo #3 Defending disables dice @seanj29
+        #  todo #3 Defending disables dice @seanj29 
         def Defend(self, DiceNo):
             dice = Dice()
             self.Defense = dice.roll(DiceNo)
+            if dice.crit == True:
+                self.hp += self.Defense//2
+
             return dice.rolled
 
 
@@ -68,8 +81,9 @@ init python:
 
         def takeTurn(self):
             dice = Dice()
-            if dice.roll("d4") > 4:
-                self.state = "Defending"     
+            if dice.roll("d4") == 1:
+                self.state = "Defending" 
+                self.Defend("d4")    
             else:
                 self.state = "Attacking"
 
@@ -92,6 +106,7 @@ init python:
                 self.frames += 1
             else:
                 self.frames = 1
+            
     
     # class TurnHandler():
     #     def __init__(self, ActorArray):

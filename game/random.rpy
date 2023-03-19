@@ -23,12 +23,22 @@ init python:
                 randbag.remove(self.rolled)
             else:
                 self.rolled = renpy.random.randint(1, self.DictDice[DiceNumber])
+                
             if self.rolled == self.DictDice[DiceNumber]:
                 self.crit = True
             else:
                 self.crit = False
             return self.rolled
         
+        def getNext(self, DiceNumber):
+            tempD = iter(self.DictDice)
+            for key in tempD:
+                if key == DiceNumber:
+                    return next(tempD, 0)
+                else:
+                    return None
+
+
     class RandomBags:
         def __new__(cls):
             if not hasattr(cls, 'instance'):
