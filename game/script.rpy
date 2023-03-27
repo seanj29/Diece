@@ -142,6 +142,9 @@ label start:
                     if player.hp == 0:
                             "Damn...."
                             return  
+            
+            #TODO #5 Add Special Options
+
          
 
 
