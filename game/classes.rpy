@@ -1,11 +1,12 @@
 init python:
     import os
-    RoundCounter = 0
     class Actor:
-        def __init__(self, name, hp = 20, max_hp = 20):
+        def __init__(self, name, hp = 20, max_hp = 20, mp = 20, max_mp = 20):
             self.name = name
             self.hp = hp
             self.max_hp = max_hp
+            self.mp = mp
+            self.max_mp = max_mp
             self.state = "None"
             self.damage = 0
             self.Defense = 0
@@ -14,8 +15,8 @@ init python:
             self.isOverHealed = False
             self.DiceisEnabled = {
                 "d4" : True,
-                "d6" : True,
-                "d8" : True,
+                "d6" : False,
+                "d8" : False,
                 "d10" : False,
                 "d12" : False,
                 "d20" : False,
@@ -59,7 +60,7 @@ init python:
             original_roll = dice.roll(DiceNo)
             self.Defense = original_roll
             if dice.crit == True:
-                self.Heal(original_roll//2)
+                self.Heal(original_roll//2, self)
             self.DisableDice(DiceNo)
             return original_roll
         
@@ -69,11 +70,10 @@ init python:
         def EnableDice(self, DiceNo):
             self.DiceisEnabled[DiceNo] = True
 
-        def Heal (self, amount, target = None):
-            target = self
-            target.hp += amount
-            if target.hp > target.max_hp:
-                self.isOverHealed = True
+        def Heal (self, amount, Actor):
+            Actor.hp += amount
+            if Actor.hp > Actor.max_hp:
+                Actor.isOverHealed = True
             return amount
 
 
@@ -87,7 +87,8 @@ init python:
 
         def __init__(self):
             player_max_hp = 10
-            super().__init__("The Guy", player_max_hp, player_max_hp)
+            player_max_mp = 20
+            super().__init__("The Guy", player_max_hp, player_max_hp, player_max_mp, player_max_mp)
             self.initiative = 20
 
         def roll(self, DiceNo):
@@ -102,7 +103,8 @@ init python:
       
         def __init__(self): 
             Enemy_max_hp = 6
-            super().__init__("Enemy", Enemy_max_hp, Enemy_max_hp)
+            Enemy_max_mp = 10
+            super().__init__("Enemy", Enemy_max_hp, Enemy_max_hp, Enemy_max_mp, Enemy_max_mp)
             self.initiative = 1
 
         def takeTurn(self):

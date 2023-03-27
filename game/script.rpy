@@ -74,7 +74,6 @@ label start:
     
 
     while player.hp > 0 and enemy.hp > 0:
-        $RoundCounter += 1
      
         
         
@@ -144,6 +143,9 @@ label start:
                             return  
             
             #TODO #5 Add Special Options
+            "Special":
+                call Rolling
+
 
          
 
