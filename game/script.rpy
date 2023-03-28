@@ -144,7 +144,8 @@ label start:
             
             #TODO #5 Add Special Options
             "Special":
-                call Rolling
+                call Special
+                
 
 
          
@@ -219,7 +220,17 @@ label Rolling:
         "D20" if player.DiceisEnabled["d20"]:
             $result = player.roll("d20") 
 return result
-    
 
+label Special:
+    menu:
+        "Explode":
+            "EXPLOSION!"
+        "Freeze":
+            "FREEZE!"
+        "Double Down":
+            "DOUBLE DOUBLE DOUBLE!"
+        "Enable Dice":
+            "LETS USE IT"
+return
 
 
