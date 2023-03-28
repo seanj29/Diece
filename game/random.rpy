@@ -29,7 +29,10 @@ init python:
             else:
                 self.crit = False
             return self.rolled
-        
+        def autoExplode(self, DiceNumber):
+            self.rolled = self.DiceDict[DiceNumber]
+            self.crit = True
+            return self.rolled
         def getNext(self, DiceNumber):
             tempD = iter(self.DiceDict)
             for key in tempD:
@@ -37,6 +40,7 @@ init python:
                     return next(tempD, 0)
                 else:
                     return None
+   
 
 
     class RandomBags:

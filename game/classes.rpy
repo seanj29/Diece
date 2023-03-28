@@ -13,6 +13,7 @@ init python:
             self.initiative = 0
             self.target = "None"
             self.isOverHealed = False
+            self.SpecialState = "None"
             self.DiceisEnabled = {
                 "d4" : True,
                 "d6" : False,
@@ -26,7 +27,11 @@ init python:
         def Attack(self, DiceNo, target = None):
             dice = Dice()
             target = self.target
-            original_roll = dice.roll(DiceNo)
+            if self.SpecialState == "Explode":
+                original_roll = dice.autoExplode(DiceNo)
+                self.specialState = "None"
+            else:
+                original_roll = dice.roll(DiceNo)
             self.damage = original_roll
             if self.target.state == "Defending" and dice.crit == False:
                 self.damage -= self.target.Defense
@@ -57,7 +62,11 @@ init python:
         #  todo #3 Defending disables dice @seanj29 
         def Defend(self, DiceNo):
             dice = Dice()
-            original_roll = dice.roll(DiceNo)
+            if self.SpecialState == "Explode":
+                original_roll = dice.autoExplode(DiceNo)
+                self.specialState = "None" 
+            else:
+                original_roll = dice.roll(DiceNo)
             self.Defense = original_roll
             if dice.crit == True:
                 self.Heal(original_roll//2, self)
@@ -75,6 +84,44 @@ init python:
             if Actor.hp > Actor.max_hp:
                 Actor.isOverHealed = True
             return amount
+        
+        def Special(self, SpecialName, EnableDices = None):
+            dice = Dice()
+            if SpecialName == "Explode":
+                self.SpecialState = "Explode"
+                self.mp -= 4
+            elif SpecialName == "Freeze":
+                self.SpecialState = "Freeze"
+                self.mp -= 4
+            elif SpecialName == "Double Down":
+                self.SpecialState = "Double Down"
+                self.mp -= 8
+            elif SpecialName == "Enable Dice":
+                self.EnableDice(EnableDices)
+                self.mp -= dice.DiceDict[EnableDices]
+
+        def initialize(self):
+            self.hp = self.max_hp 
+            self.mp = self.max_mp
+            self.state = "None"
+            self.damage = 0
+            self.Defense = 0
+            self.target = "None"
+            self.isOverHealed = False
+            self.SpecialState = "None"
+            self.DiceisEnabled = {
+                "d4" : True,
+                "d6" : False,
+                "d8" : False,
+                "d10" : False,
+                "d12" : False,
+                "d20" : False,
+            }
+           
+
+
+
+
 
 
 

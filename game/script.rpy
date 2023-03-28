@@ -9,8 +9,8 @@ default usingRandBag = False
 
 # The game starts here.
 label start:
-    $player.hp = player.max_hp
-    $enemy.hp = enemy.max_hp
+    $player.initialize()
+    $enemy.initialize()
 
     camera:
         perspective True
@@ -143,8 +143,9 @@ label start:
                             return  
             
             #TODO #5 Add Special Options
-            "Special":
+            "Special" if player.state != "Special":
                 call Special
+                $player.state = "Special"
                 
 
 
@@ -223,14 +224,30 @@ return result
 
 label Special:
     menu:
-        "Explode":
-            "EXPLOSION!"
-        "Freeze":
-            "FREEZE!"
-        "Double Down":
-            "DOUBLE DOUBLE DOUBLE!"
+        "Explode" if player.mp > 4:
+            $player.Special("Explode")
+        "Freeze" if player.mp > 4:
+            $player.Special("Freeze")
+        "Double Down" if player.mp > 8:
+            $player.Special("Double Down")
         "Enable Dice":
-            "LETS USE IT"
+            call enable_dice
+            $player.Special("Enable Dice", dicetoenable)
 return
 
+label enable_dice:
 
+    menu:
+        "D4" if not player.DiceisEnabled["d4"]:
+            $dicetoenable = "d4"
+        "D6" if not player.DiceisEnabled["d6"]:
+            $dicetoenable = "d6"
+        "D8" if not player.DiceisEnabled["d8"]:
+            $dicetoenable  = "d8"
+        "D10" if not player.DiceisEnabled["d10"]:
+            $dicetoenable = "d10"
+        "D12" if not player.DiceisEnabled["d12"]:
+            $dicetoenable  = "d12"
+        "D20" if not player.DiceisEnabled["d20"]:
+            $dicetoenable  = "d20"
+return dicetoenable
