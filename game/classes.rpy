@@ -109,9 +109,6 @@ init python:
             if SpecialName == "Explode":
                 self.SpecialState = "Explode"
                 self.mp -= 4
-            elif SpecialName == "Freeze":
-                self.SpecialState = "Freeze"
-                self.mp -= 4
             elif SpecialName == "Double Down":
                 self.SpecialState = "Double Down"
                 self.mp -= 8
