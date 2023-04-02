@@ -23,25 +23,36 @@ init python:
                 "d20" : False,
             }
             
-
+        
         def Attack(self, DiceNo, target = None):
             dice = Dice()
             target = self.target
-            if self.SpecialState == "Explode":
+            original_roll = dice.roll(DiceNo)
+            if self.SpecialState == "None":
+                self.damage = original_roll
+            elif self.SpecialState == "Explode":
                 original_roll = dice.autoExplode(DiceNo)
-                self.specialState = "None"
-            else:
-                original_roll = dice.roll(DiceNo)
-            self.damage = original_roll
+                self.damage = original_roll
+                self.SpecialState = "None"
+            elif self.SpecialState == "Double Down":
+                second_roll = dice.roll(DiceNo)
+                self.damage = original_roll + second_roll
+                if dice.crit:
+                    self.damage += self.CriticallyAttack(DiceNo, dice)
+                original_roll = f"{original_roll} on the first and {second_roll} on the second dice"
+                self.SpecialState = "None"
             if self.target.state == "Defending" and dice.crit == False:
                 self.damage -= self.target.Defense
                 if self.damage < 0:
-                    self.damage = 0    
-            elif dice.crit == True:
+                    self.damage = 0 
+            elif dice.crit:
                 self.damage += self.CriticallyAttack(DiceNo, dice)
-            target.TakeDamage(self.damage)
+                original_roll = "a Critical Hit"
+            self.target.TakeDamage(self.damage)
+
             return original_roll
-        
+            
+       
         def CriticallyAttack(self, DiceNo, DiceThatCrit):
             next = DiceThatCrit.getNext(DiceNo)
             while next != None:
@@ -62,15 +73,23 @@ init python:
         #  todo #3 Defending disables dice @seanj29 
         def Defend(self, DiceNo):
             dice = Dice()
-            if self.SpecialState == "Explode":
+            original_roll = dice.roll(DiceNo)
+            if self.SpecialState == "None":
+                self.Defense = original_roll
+            elif self.SpecialState == "Explode":
                 original_roll = dice.autoExplode(DiceNo)
-                self.specialState = "None" 
-            else:
-                original_roll = dice.roll(DiceNo)
-            self.Defense = original_roll
+                self.Defense = original_roll
+                self.SpecialState = "None"
+            elif self.SpecialState == "Double Down":
+                second_roll = dice.roll(DiceNo)
+                self.Defense = original_roll + second_roll
+                if dice.crit:
+                    self.Heal(second_roll//2, self)
+                original_roll = f"{original_roll} on the first and {second_roll} on the second dice"
+                self.SpecialState = "None"
             if dice.crit == True:
                 self.Heal(original_roll//2, self)
-            self.DisableDice(DiceNo)
+                original_roll = f"A crit and healed {self.Defense//2} damage"
             return original_roll
         
         def DisableDice(self, DiceNo):
@@ -117,7 +136,7 @@ init python:
                 "d12" : False,
                 "d20" : False,
             }
-           
+
 
 
 

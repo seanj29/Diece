@@ -129,13 +129,13 @@ label start:
                 call Rolling
                 if enemy.state == "Defending":
                     if player.initiative > enemy.initiative:
-                        "You are defending for [player.Defense] damage"
+                        "You rolled [result] and are defending for [player.Defense] damage"
                         "[enemy.name] is defending for [enemy.Defense] damage"
                     else:
                         "[enemy.name] is defending for [enemy.Defense] damage"
-                        "You are defending for [player.Defense] damage"
+                        "You rolled [result] and are defending for [player.Defense] damage"
                 else:
-                    "You are defending for [player.Defense] damage" 
+                    "You rolled [result] and are defending for [player.Defense] damage" 
                     call enemy_attack
                     call camreset  
                     if player.hp == 0:
@@ -144,6 +144,7 @@ label start:
             
             #TODO #5 Add Special Options
             "Special" if player.state != "Special":
+
                 call Special
                 $player.state = "Special"
                 
