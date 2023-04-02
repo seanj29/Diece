@@ -227,8 +227,6 @@ label Special:
     menu:
         "Explode" if player.mp > 4:
             $player.Special("Explode")
-        "Freeze" if player.mp > 4:
-            $player.Special("Freeze")
         "Double Down" if player.mp > 8:
             $player.Special("Double Down")
         "Enable Dice":
@@ -239,16 +237,16 @@ return
 label enable_dice:
 
     menu:
-        "D4" if not player.DiceisEnabled["d4"]:
+        "D4" if player.mp >= 4 and not player.DiceisEnabled["d4"]: 
             $dicetoenable = "d4"
-        "D6" if not player.DiceisEnabled["d6"]:
+        "D6" if player.mp >= 6 and not player.DiceisEnabled["d6"]: 
             $dicetoenable = "d6"
-        "D8" if not player.DiceisEnabled["d8"]:
+        "D8" if player.mp >= 8 and not player.DiceisEnabled["d8"]: 
             $dicetoenable  = "d8"
-        "D10" if not player.DiceisEnabled["d10"]:
+        "D10" if player.mp >= 10 and not player.DiceisEnabled["d10"]:
             $dicetoenable = "d10"
-        "D12" if not player.DiceisEnabled["d12"]:
+        "D12" if player.mp >= 12 and not player.DiceisEnabled["d12"]:
             $dicetoenable  = "d12"
-        "D20" if not player.DiceisEnabled["d20"]:
+        "D20" if player.mp >= 20 and not player.DiceisEnabled["d20"]:
             $dicetoenable  = "d20"
 return dicetoenable
