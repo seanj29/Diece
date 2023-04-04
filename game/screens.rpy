@@ -77,7 +77,7 @@ style frame:
 
 
 ## Hp bars scene, used to visualize enemy and player hp
-screen hp_bars_1v1:
+screen hp_bars_1v1():
 
     vbox:
         spacing 20
