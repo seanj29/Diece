@@ -146,7 +146,6 @@ label start:
             "Special" if player.state != "Special":
 
                 call Special
-                $player.state = "Special"
                 
 
 
@@ -226,12 +225,17 @@ return result
 label Special:
     menu:
         "Explode" if player.mp > 4:
+            $player.state = "Special"
             $player.Special("Explode")
         "Double Down" if player.mp > 8:
+            $player.state = "Special"
             $player.Special("Double Down")
         "Enable Dice":
             call enable_dice
             $player.Special("Enable Dice", dicetoenable)
+        "Back":
+            return
+        
 return
 
 label enable_dice:
@@ -249,4 +253,6 @@ label enable_dice:
             $dicetoenable  = "d12"
         "D20" if player.mp >= 20 and not player.DiceisEnabled["d20"]:
             $dicetoenable  = "d20"
+        "Back":
+            return
 return dicetoenable
