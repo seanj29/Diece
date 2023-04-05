@@ -92,7 +92,7 @@ label start:
                     call player_attack
                     call camreset
                     if enemy.hp == 0:
-                        "You win!"
+                        call enemy_death
                         return     
                 else:
                     if player.initiative > enemy.initiative:
@@ -104,18 +104,18 @@ label start:
                         call enemy_attack
                         call camreset
                         if player.hp == 0:
-                            "Damn...."
+                            call player_death
                             return
                     else:
                         call enemy_attack
                         call camreset
                         if player.hp == 0:
-                            "Damn...."
+                            call player_death
                             return
                         call player_attack   
                         call camreset
                         if enemy.hp == 0:
-                            "You win!"
+                            call enemy_death
                             return  
                         
              
@@ -145,7 +145,7 @@ label start:
                     call enemy_attack
                     call camreset  
                     if player.hp == 0:
-                            "Damn...."
+                            call player_death
                             return  
             
             #TODO #5 Add Special Options
@@ -207,6 +207,13 @@ label enemy_death:
         pause 3.5 alpha 0.0 
 
     "You win!"
+return
+
+label player_death:
+    show The Guy Death:
+        pause 1.5 alpha 0.0 
+
+    "Damn...."
 return
 
 label camreset:
