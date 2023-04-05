@@ -5,12 +5,6 @@ image Enemy Idle:
         function  EnemyIdle.Animate
         repeat
 
-image The Guy Idle:
-    block:
-        "[TheGuyIdle.image_dir] [TheGuyIdle.frames].png"
-        pause 0.25
-        function  TheGuyIdle.Animate
-        repeat
 
 image Enemy Run:
     block:
@@ -19,14 +13,47 @@ image Enemy Run:
         function  EnemyRun.Animate
         repeat
 
+image Enemy Hurt:
+    "Enemy Idle"
+    pause 1.1
+    block:
+        "[EnemyHurt.image_dir] [EnemyHurt.frames].png"
+        pause 0.15
+        function  EnemyHurt.Animate
+        repeat EnemyHurt.framesmax
+    "Enemy Idle"
+
 image Enemy Attack:
     block:
         "[EnemyAttack.image_dir] [EnemyAttack.frames].png"
-        pause 0.05
+        pause 0.15
         function  EnemyAttack.Animate
-        repeat EnemyAttack.framesmax    
+        repeat EnemyAttack.framesmax
     "Enemy Idle"
 
+image Enemy Death:
+    block:
+        "[EnemyDeath.image_dir] [EnemyDeath.frames].png"
+        pause 0.15
+        function  EnemyDeath.Animate
+        repeat EnemyDeath.framesmax 
+
+
+image The Guy Walk:
+    block:
+        "[TheGuyWalk.image_dir] [TheGuyWalk.frames].png"
+        pause 0.15
+        function  TheGuyWalk.Animate
+        repeat
+
+       
+image The Guy Idle:
+    block:
+        "[TheGuyIdle.image_dir] [TheGuyIdle.frames].png"
+        pause 0.25
+        function  TheGuyIdle.Animate
+        repeat
+        
 image The Guy Attack:
     block:
         "[TheGuyAttack.image_dir] [TheGuyAttack.frames].png"
@@ -35,10 +62,12 @@ image The Guy Attack:
         repeat TheGuyAttack.framesmax
     "The Guy Idle"
 
-image The Guy Walk:
+image The Guy Hurt:
+    "The Guy Idle"
+    pause 1.05
     block:
-        "[TheGuyWalk.image_dir] [TheGuyWalk.frames].png"
-        pause 0.15
-        function  TheGuyWalk.Animate
-        repeat
-       
+        "[TheGuyHurt.image_dir] [TheGuyHurt.frames].png"
+        pause 0.12
+        function  TheGuyHurt.Animate
+        repeat TheGuyHurt.framesmax
+    "The Guy Idle"

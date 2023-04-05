@@ -86,6 +86,7 @@ label start:
                 call Rolling 
                 # Conditions for who's turn is first, Defenders always have priority                 
                 if enemy.state == "Defending":
+                    call enemy_defending
                     "[enemy.name] is defending for [enemy.Defense] damage"
                     call camreset
                     call player_attack
@@ -98,7 +99,7 @@ label start:
                         call player_attack
                         call camreset
                         if enemy.hp == 0:
-                            "You win!"
+                            call enemy_death
                             return     
                         call enemy_attack
                         call camreset
@@ -129,12 +130,17 @@ label start:
                 call Rolling
                 if enemy.state == "Defending":
                     if player.initiative > enemy.initiative:
+                        call player_defending
                         "You rolled [result] and are defending for [player.Defense] damage"
+                        call enemy_defending
                         "[enemy.name] is defending for [enemy.Defense] damage"
                     else:
+                        call enemy_defending
                         "[enemy.name] is defending for [enemy.Defense] damage"
+                        call player_defending
                         "You rolled [result] and are defending for [player.Defense] damage"
                 else:
+                    call player_defending
                     "You rolled [result] and are defending for [player.Defense] damage" 
                     call enemy_attack
                     call camreset  
@@ -173,7 +179,9 @@ label player_attack:
         "The Guy Attack"
         pause 1
         ease 1 pos(0,0)
-        pause 1  
+        pause 1 
+
+    show Enemy Hurt 
     
     "You rolled [result] and did [player.damage] damage to [player.target.name]!"
 return
@@ -189,22 +197,54 @@ label enemy_attack:
         pause 1.5
         ease 1.5 pos(0,0)
         pause 1
- 
+
+    show The Guy Hurt
     "You got hit for [enemy.damage] damage??"
 return
 
+label enemy_death:
+    show Enemy Death:
+        pause 3.5 alpha 0.0 
+
+    "You win!"
+return
+
 label camreset:
+    if enemy.Defense == 0:
+        show Enemy Idle:
+            matrixcolor BrightnessMatrix(0.0)
+            easein 0.2  pos(0,0)
+    else:
+        show Enemy Idle:
+            matrixcolor BrightnessMatrix(0.3)
+            easein 0.2  pos(0,0)
 
-    show Enemy Idle:
-        easein 0.2  pos(0,0)
 
+    if player.Defense == 0:
+            show The Guy Idle:
+                matrixcolor BrightnessMatrix(0.0)
+                easein 0.2  pos(0,0)
+    else:
+        show The Guy Idle:
+            matrixcolor BrightnessMatrix(0.3)
+            easein 0.2  pos(0,0)
 
+    
 
-    show The Guy Idle:
-        easein 0.2  pos(0,0)
        
 return
 
+label enemy_defending:
+    show Enemy Idle:
+        easein 0.25 matrixcolor BrightnessMatrix(0.3)
+
+return
+
+label player_defending:
+    show The Guy Idle:
+        easein 0.25 matrixcolor BrightnessMatrix(0.3)
+
+return
 
 label Rolling:
     menu:

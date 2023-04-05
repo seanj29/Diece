@@ -49,7 +49,7 @@ init python:
                 self.damage += self.CriticallyAttack(DiceNo, dice)
                 original_roll = "a Critical Hit"
             self.target.TakeDamage(self.damage)
-
+            self.target.Defense = 0
             return original_roll
             
        
@@ -196,9 +196,7 @@ init python:
             if self.frames < self.framesmax:
                 self.frames += 1
             else:
-                self.frames = 1
-            
-    
+                self.frames = 1 
     # class TurnHandler():
     #     def __init__(self, ActorArray):
     #         self.ActorArray = ActorArray

@@ -4,6 +4,7 @@ init python:
             if not hasattr(cls, 'instance'):
                 cls.instance = super(Dice, cls).__new__(cls)
             return cls.instance
+            
         def __init__(self):
             self.DiceDict = {
                 "d4" : 4,
@@ -16,6 +17,7 @@ init python:
             self.rolled = 0
             self.randbagUsed = False
             self.crit = False;
+
         def roll(self, DiceNumber):
             randbag = RandomBags()
             if self.randbagUsed:
@@ -29,10 +31,12 @@ init python:
             else:
                 self.crit = False
             return self.rolled
+
         def autoExplode(self, DiceNumber):
             self.rolled = self.DiceDict[DiceNumber]
             self.crit = True
             return self.rolled
+
         def getNext(self, DiceNumber):
             tempD = iter(self.DiceDict)
             for key in tempD:
@@ -48,6 +52,7 @@ init python:
             if not hasattr(cls, 'instance'):
                 cls.instance = super(RandomBags, cls).__new__(cls)
             return cls.instance
+
         def __init__(self):
             self.BagDice = {
             4 : 0,
