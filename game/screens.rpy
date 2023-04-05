@@ -87,6 +87,10 @@ screen hp_bars_1v1():
         text "[player.name]"
         bar value player.hp range player.max_hp
         bar value player.mp range player.max_mp
+         
+
+
+
     vbox:
         spacing 20
         xalign 0.9
@@ -229,7 +233,19 @@ screen choice(items):
 
     vbox:
         for i in items:
-            textbutton i.caption action i.action
+            textbutton i.caption:
+                action i.action
+                if i.args:
+                    tooltip i.args[0]
+    hbox:
+        spacing 20
+        xalign 0.5
+        yalign 0.8
+
+        $tooltip = GetTooltip()
+        if tooltip:
+            text "[tooltip]"
+        
 
 
 style choice_vbox is vbox
