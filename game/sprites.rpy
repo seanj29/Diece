@@ -64,10 +64,17 @@ image The Guy Attack:
 
 image The Guy Hurt:
     "The Guy Idle"
-    pause 1.05
+    pause 2
     block:
         "[TheGuyHurt.image_dir] [TheGuyHurt.frames].png"
-        pause 0.12
+        pause 0.15
         function  TheGuyHurt.Animate
         repeat TheGuyHurt.framesmax
     "The Guy Idle"
+
+image The Guy Death:
+    block:
+        "[TheGuyDeath.image_dir] [TheGuyDeath.frames].png"
+        pause 0.15
+        function  TheGuyDeath.Animate
+        repeat TheGuyDeath.framesmax 
