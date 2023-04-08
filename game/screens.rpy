@@ -87,9 +87,14 @@ screen hp_bars_1v1():
         text "[player.name]"
         bar value player.hp range player.max_hp
         bar value player.mp range player.max_mp
+    
+    vbox:
+        spacing 20
+        xalign 0.08
+        yalign 0.058
+        text "Hp: [player.hp] / [player.max_hp]"
+        text "Mp: [player.mp] / [player.max_mp]"
          
-
-
 
     vbox:
         spacing 20
@@ -99,6 +104,14 @@ screen hp_bars_1v1():
         text "[enemy.name]"
         bar value enemy.hp range enemy.max_hp
         bar value enemy.mp range enemy.max_mp
+    
+    vbox:
+        spacing 20
+        xalign 0.69
+        yalign 0.058
+        text "Hp: [enemy.hp] / [enemy.max_hp]"
+        text "Mp: [enemy.mp] / [enemy.max_mp]"
+         
 
 ################################################################################
 ## In-game screens
