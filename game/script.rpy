@@ -27,9 +27,9 @@ label start:
         "No thank you"("Quits the game"):
             g "I'm saddened....."
             return
-
-
 return
+
+
 label fight:
     $player.initialize()
     $enemy.initialize()
@@ -63,17 +63,14 @@ label fight:
         pos (-207, -108) zpos 0.0 xzoom 1.0 
         zoom 4.41 
         crop (0.0, 0.0, 1.0, 1.0) 
+    
     with dissolve
 
 
-    # This shows a character sprite. A placeholder is used, but you can
-    # replace it by adding a file named "eileen happy.png" to the images
-    # directory.
     
     show screen hp_bars_1v1 
     
-    
- 
+     
 
     show The Guy Idle:
         subpixel True 
@@ -169,7 +166,6 @@ label fight:
                             call player_death
                             return  
             
-            #TODO #5 Add Special Options
             "Special" if player.state != "Special":
 
                 call Special
@@ -178,14 +174,6 @@ label fight:
 
          
 
-
-    # show eileen happy
-
-    ## These display lines of dialogue.
-
-    #e "You've created a new Ren'Py game."
-
-    #e "Once you add a story, pictures, and music, you can release it to the world!"
 
     # This ends the game.
 return

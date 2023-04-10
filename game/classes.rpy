@@ -202,40 +202,7 @@ init python:
                 self.frames += 1
             else:
                 self.frames = 1 
-    # class TurnHandler():
-    #     def __init__(self, ActorArray):
-    #         self.ActorArray = ActorArray
 
-    #     def handle_turn(self, NumberValue):
-    #         for Actor in self.ActorArray:
-    #             if Actor.name == "Enemy":
-    #                     Actor.takeTurn()
-           
-    #         for Actor in self.ActorArray:                        
-    #             if Actor.state == "Defending":
-    #                 Actor.Defend(NumberValue)
-    #                 if Actor.name == "The Guy":
-    #                     narrator("You are defending for [player.Defense] damage")
-    #                 else:
-    #                     narrator("[enemy.name] defending for [enemy.Defense] damage")
-
-    #         for Actor in self.ActorArray:                
-    #             if Actor.state == "Attacking":
-    #                 Actor.Attack(NumberValue) 
-    #                 if Actor.name == "The Guy":
-    #                     narrator("You rolled [result] and did [player.damage] damage to [player.target.name]!")    
-    #                 else:
-    #                     narrator("You got hit for [enemy.damage] damage??")
-                    
-
-    #     def InitInitiative(self):
-    #         self.ActorArray.sort(key=lambda Actor: Actor.initiative, reverse = True)
-
-    #     def Add_turn(self, Actor):
-    #         self.ActorArray.append(Actor)
-    #         self.InitInitiative()
-    #     def Remove_turn(self, Actor):
-    #         self.ActorArray.remove(Actor)
 
 
 
@@ -244,7 +211,6 @@ init python:
 
     player = Player()
     enemy = Enemy()
-    # TurnHandler = TurnHandler([player, enemy])
     EnemyIdle = Anim("Idle", enemy, 1)
     TheGuyIdle = Anim("Idle", player, 1)
     EnemyDeath = Anim("Death", enemy, 1)
