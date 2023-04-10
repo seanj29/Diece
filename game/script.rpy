@@ -64,7 +64,7 @@ label start:
 
 
     show The Guy Idle:
-        subpixel True
+        subpixel True 
         anchor (-225, -500) ypos 0 zpos 0.0 
         zoom 6
         matrixtransform ScaleMatrix(1.0, 1.0, 1.0)*OffsetMatrix(0.0, 0.0, 0.0)*RotateMatrix(0.0, 0.0, 0.0)
@@ -93,16 +93,15 @@ label start:
                 # Conditions for who's turn is first, Defenders always have priority                 
                 if enemy.state == "Defending":
                     call enemy_defending
-                    "[enemy.name] is defending for [enemy.Defense] damage"
                     call camreset
-                    call player_attack
+                    call player_attack(result)
                     call camreset
                     if enemy.hp == 0:
                         call enemy_death
                         return     
                 else:
                     if player.initiative >= enemy.initiative:
-                        call player_attack
+                        call player_attack(result)
                         call camreset
                         if enemy.hp == 0:
                             call enemy_death
@@ -118,7 +117,7 @@ label start:
                         if player.hp == 0:
                             call player_death
                             return
-                        call player_attack   
+                        call player_attack(result)   
                         call camreset
                         if enemy.hp == 0:
                             call enemy_death
@@ -136,18 +135,13 @@ label start:
                 call Rolling
                 if enemy.state == "Defending":
                     if player.initiative >= enemy.initiative:
-                        call player_defending
-                        "You rolled [result] and are defending for [player.Defense] damage"
+                        call player_defending(result)
                         call enemy_defending
-                        "[enemy.name] is defending for [enemy.Defense] damage"
                     else:
                         call enemy_defending
-                        "[enemy.name] is defending for [enemy.Defense] damage"
-                        call player_defending
-                        "You rolled [result] and are defending for [player.Defense] damage"
+                        call player_defending(result)
                 else:
-                    call player_defending
-                    "You rolled [result] and are defending for [player.Defense] damage" 
+                    call player_defending(result)
                     call enemy_attack
                     call camreset  
                     if player.hp == 0:
@@ -176,7 +170,7 @@ label start:
 return
 
 
-label player_attack:
+label player_attack(DiceToRoll):
     camera:
         pause 0.1
         easeout_elastic 0.6 pos (432, 0) zpos -603.0 rotate 3.0 
@@ -196,8 +190,8 @@ label player_attack:
         pause 1 
 
     show Enemy Hurt 
-    
-    "You rolled [result] and did [player.damage] damage to [player.target.name]!"
+    $No = player.Attack(DiceToRoll)
+    "You rolled a [No] and did [player.damage] damage to [player.target.name]!"
 return
 
 label enemy_attack:
@@ -269,29 +263,33 @@ return
 label enemy_defending:
     show Enemy Idle:
         easein 0.25 matrixcolor BrightnessMatrix(0.3)
+    "[enemy.name] is defending for [enemy.Defense] damage"
+
 
 return
 
-label player_defending:
+label player_defending(DiceToRoll):
     show The Guy Idle:
         easein 0.25 matrixcolor BrightnessMatrix(0.3)
+    $No = player.Defend(DiceToRoll)    
+    "You rolled a [No] and are defending for [player.Defense] damage" 
 
 return
 
 label Rolling:
     menu:
         "D4"if player.DiceisEnabled["d4"]:
-            $result = player.roll("d4")
+            $result = "d4"
         "D6"if player.DiceisEnabled["d6"]:
-            $result = player.roll("d6")
+            $result = "d6"
         "D8"if player.DiceisEnabled["d8"]:
-            $result = player.roll("d8")
+            $result = "d8"
         "D10" if player.DiceisEnabled["d10"]:
-            $result = player.roll("d10")
+            $result = "d10"
         "D12" if player.DiceisEnabled["d12"]:
-            $result = player.roll("d12")
+            $result = "d12"
         "D20" if player.DiceisEnabled["d20"]:
-            $result = player.roll("d20") 
+            $result = "d20" 
 return result
 
 label Special:
