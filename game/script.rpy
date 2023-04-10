@@ -70,7 +70,13 @@ label start:
         matrixtransform ScaleMatrix(1.0, 1.0, 1.0)*OffsetMatrix(0.0, 0.0, 0.0)*RotateMatrix(0.0, 0.0, 0.0)
        
 
+    if player.initiative >= enemy.initiative:
+        "You have a higher initiative, so your moves have priority!" 
+    else:
+        "[enemy.name] has a higher initiative, so their moves have priority!"  
+
         
+
     
 
     while player.hp > 0 and enemy.hp > 0:
@@ -95,7 +101,7 @@ label start:
                         call enemy_death
                         return     
                 else:
-                    if player.initiative > enemy.initiative:
+                    if player.initiative >= enemy.initiative:
                         call player_attack
                         call camreset
                         if enemy.hp == 0:
@@ -129,7 +135,7 @@ label start:
                 $enemy.takeTurn()
                 call Rolling
                 if enemy.state == "Defending":
-                    if player.initiative > enemy.initiative:
+                    if player.initiative >= enemy.initiative:
                         call player_defending
                         "You rolled [result] and are defending for [player.Defense] damage"
                         call enemy_defending

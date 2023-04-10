@@ -115,6 +115,10 @@ init python:
             elif SpecialName == "Enable Dice":
                 self.EnableDice(EnableDices)
                 self.mp -= dice.DiceDict[EnableDices]
+        
+        def rollInitiative(self):
+            dice = Dice()
+            self.initiative = dice.roll("d20")
 
         def initialize(self):
             self.hp = self.max_hp 
@@ -133,6 +137,7 @@ init python:
                 "d12" : False,
                 "d20" : False,
             }
+            self.rollInitiative()
 
 
 
