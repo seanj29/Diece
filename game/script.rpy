@@ -5,10 +5,32 @@
 
 default usingRandBag = False
 
-##define e = Character("Eileen")
+define g = Character("???")
 
 # The game starts here.
 label start:
+    scene black
+
+    "....."
+    "......."
+    show GodLight at center with dissolve
+    "*Crash*"
+    g "Who's there?"
+    g "Ah. it's just you"
+    g "Well, are you not going to play?" 
+
+    menu:
+        "Go Play"("Start the Game"):
+            call fight
+        "Ask more questions"("Help and Basic Controls"):
+            "Not set up yet :Smile:"
+        "No thank you"("Quits the game"):
+            g "I'm saddened....."
+            return
+
+
+return
+label fight:
     $player.initialize()
     $enemy.initialize()
 
@@ -16,9 +38,6 @@ label start:
         perspective True
          
 
-    # Show a background. This uses a placeholder by default, but you can
-    # add a file (named either "bg room.png" or "bg room.jpg") to the
-    # images directory to show it.
 
     scene bg:
         pos (-207, -108) zpos 0.0
@@ -44,30 +63,32 @@ label start:
         pos (-207, -108) zpos 0.0 xzoom 1.0 
         zoom 4.41 
         crop (0.0, 0.0, 1.0, 1.0) 
-
+    with dissolve
 
 
     # This shows a character sprite. A placeholder is used, but you can
     # replace it by adding a file named "eileen happy.png" to the images
     # directory.
     
-    show screen hp_bars_1v1
+    show screen hp_bars_1v1 
+    
     
  
-    
-    show Enemy Idle:
-        subpixel True
-        anchor (-1224, -54) 
-        zoom 10.2 
-        matrixtransform ScaleMatrix(1.0, 1.0, 1.0)*OffsetMatrix(0.0, 0.0, 0.0)*RotateMatrix(0.0, 180.0, 0.0)
-
-
 
     show The Guy Idle:
         subpixel True 
         anchor (-225, -500) ypos 0 zpos 0.0 
         zoom 6
         matrixtransform ScaleMatrix(1.0, 1.0, 1.0)*OffsetMatrix(0.0, 0.0, 0.0)*RotateMatrix(0.0, 0.0, 0.0)
+
+    show Enemy Idle:
+        subpixel True
+        anchor (-1224, -54) 
+        zoom 10.2 
+        matrixtransform ScaleMatrix(1.0, 1.0, 1.0)*OffsetMatrix(0.0, 0.0, 0.0)*RotateMatrix(0.0, 180.0, 0.0)
+
+    with pixellate
+
        
 
     if player.initiative >= enemy.initiative:
