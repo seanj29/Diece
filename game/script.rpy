@@ -216,7 +216,8 @@ label enemy_attack:
 return
 
 label enemy_death:
-    camera at reset
+    camera:
+        easein_cubic 0.1 pos(0,0) zpos 0 rotate 0
     show Enemy Death:
         pause 3.5 alpha 0.0 
 
@@ -224,7 +225,8 @@ label enemy_death:
 return
 
 label player_death:
-    camera at reset
+    camera:
+        easein_cubic 0.1 pos(0,0) zpos 0 rotate 0
     show The Guy Death:
         pause 1.5 alpha 0.0 
 
@@ -232,7 +234,8 @@ label player_death:
 return
 
 label camreset:
-    camera at reset
+    camera:
+        easein_cubic 0.1 pos(0,0) zpos 0 rotate 0
     if enemy.Defense == 0:
         show Enemy Idle:
             matrixcolor BrightnessMatrix(0.0)
