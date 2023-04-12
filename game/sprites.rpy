@@ -78,3 +78,4 @@ image The Guy Death:
         pause 0.15
         function  TheGuyDeath.Animate
         repeat TheGuyDeath.framesmax 
+image GodLight = "God/BrightWhite.png"

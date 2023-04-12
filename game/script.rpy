@@ -5,10 +5,41 @@
 
 default usingRandBag = False
 
-##define e = Character("Eileen")
+define g = Character("???")
 
 # The game starts here.
 label start:
+    scene black
+    "....."
+    "......."
+    show GodLight at center with dissolve
+    show GodLight:
+        animation
+        anchor (-170, -190)
+        block:
+            easein 2 pos (0, 0)
+            easein 2 pos (0, -100)
+            repeat
+        
+
+
+    "*Crash*"
+    g "Who's there?"
+    g "Ah. it's just you"
+    g "Well, are you not going to play?" 
+
+    menu:
+        "Go Play"("Start the Game"):
+            call fight
+        "Ask more questions"("Help and Basic Controls"):
+            "Not set up yet :Smile:"
+        "No thank you"("Quits the game"):
+            g "I'm saddened....."
+            return
+return
+
+
+label fight:
     $player.initialize()
     $enemy.initialize()
 
@@ -16,9 +47,6 @@ label start:
         perspective True
          
 
-    # Show a background. This uses a placeholder by default, but you can
-    # add a file (named either "bg room.png" or "bg room.jpg") to the
-    # images directory to show it.
 
     scene bg:
         pos (-207, -108) zpos 0.0
@@ -44,30 +72,29 @@ label start:
         pos (-207, -108) zpos 0.0 xzoom 1.0 
         zoom 4.41 
         crop (0.0, 0.0, 1.0, 1.0) 
+    
+    with dissolve
 
 
+    
+    show screen hp_bars_1v1 
+    
+     
 
-    # This shows a character sprite. A placeholder is used, but you can
-    # replace it by adding a file named "eileen happy.png" to the images
-    # directory.
-    
-    show screen hp_bars_1v1
-    
- 
-    
+    show The Guy Idle:
+        subpixel True 
+        anchor (-225, -500) ypos 0 zpos 0.0 
+        zoom 6
+        matrixtransform ScaleMatrix(1.0, 1.0, 1.0)*OffsetMatrix(0.0, 0.0, 0.0)*RotateMatrix(0.0, 0.0, 0.0)
+
     show Enemy Idle:
         subpixel True
         anchor (-1224, -54) 
         zoom 10.2 
         matrixtransform ScaleMatrix(1.0, 1.0, 1.0)*OffsetMatrix(0.0, 0.0, 0.0)*RotateMatrix(0.0, 180.0, 0.0)
 
+    with pixellate
 
-
-    show The Guy Idle:
-        subpixel True
-        anchor (-225, -500) ypos 0 zpos 0.0 
-        zoom 6
-        matrixtransform ScaleMatrix(1.0, 1.0, 1.0)*OffsetMatrix(0.0, 0.0, 0.0)*RotateMatrix(0.0, 0.0, 0.0)
        
 
     if player.initiative >= enemy.initiative:
@@ -93,16 +120,15 @@ label start:
                 # Conditions for who's turn is first, Defenders always have priority                 
                 if enemy.state == "Defending":
                     call enemy_defending
-                    "[enemy.name] is defending for [enemy.Defense] damage"
                     call camreset
-                    call player_attack
+                    call player_attack(result)
                     call camreset
                     if enemy.hp == 0:
                         call enemy_death
                         return     
                 else:
                     if player.initiative >= enemy.initiative:
-                        call player_attack
+                        call player_attack(result)
                         call camreset
                         if enemy.hp == 0:
                             call enemy_death
@@ -118,7 +144,7 @@ label start:
                         if player.hp == 0:
                             call player_death
                             return
-                        call player_attack   
+                        call player_attack(result)   
                         call camreset
                         if enemy.hp == 0:
                             call enemy_death
@@ -136,25 +162,19 @@ label start:
                 call Rolling
                 if enemy.state == "Defending":
                     if player.initiative >= enemy.initiative:
-                        call player_defending
-                        "You rolled [result] and are defending for [player.Defense] damage"
+                        call player_defending(result)
                         call enemy_defending
-                        "[enemy.name] is defending for [enemy.Defense] damage"
                     else:
                         call enemy_defending
-                        "[enemy.name] is defending for [enemy.Defense] damage"
-                        call player_defending
-                        "You rolled [result] and are defending for [player.Defense] damage"
+                        call player_defending(result)
                 else:
-                    call player_defending
-                    "You rolled [result] and are defending for [player.Defense] damage" 
+                    call player_defending(result)
                     call enemy_attack
                     call camreset  
                     if player.hp == 0:
                             call player_death
                             return  
             
-            #TODO #5 Add Special Options
             "Special" if player.state != "Special":
 
                 call Special
@@ -164,19 +184,11 @@ label start:
          
 
 
-    # show eileen happy
-
-    ## These display lines of dialogue.
-
-    #e "You've created a new Ren'Py game."
-
-    #e "Once you add a story, pictures, and music, you can release it to the world!"
-
     # This ends the game.
 return
 
 
-label player_attack:
+label player_attack(DiceToRoll):
     camera:
         pause 0.1
         easeout_elastic 0.6 pos (432, 0) zpos -603.0 rotate 3.0 
@@ -196,8 +208,8 @@ label player_attack:
         pause 1 
 
     show Enemy Hurt 
-    
-    "You rolled [result] and did [player.damage] damage to [player.target.name]!"
+    $No = player.Attack(DiceToRoll)
+    "You rolled a [No] and did [player.damage] damage to [player.target.name]!"
 return
 
 label enemy_attack:
@@ -269,29 +281,33 @@ return
 label enemy_defending:
     show Enemy Idle:
         easein 0.25 matrixcolor BrightnessMatrix(0.3)
+    "[enemy.name] is defending for [enemy.Defense] damage"
+
 
 return
 
-label player_defending:
+label player_defending(DiceToRoll):
     show The Guy Idle:
         easein 0.25 matrixcolor BrightnessMatrix(0.3)
+    $No = player.Defend(DiceToRoll)    
+    "You rolled a [No] and are defending for [player.Defense] damage" 
 
 return
 
 label Rolling:
     menu:
         "D4"if player.DiceisEnabled["d4"]:
-            $result = player.roll("d4")
+            $result = "d4"
         "D6"if player.DiceisEnabled["d6"]:
-            $result = player.roll("d6")
+            $result = "d6"
         "D8"if player.DiceisEnabled["d8"]:
-            $result = player.roll("d8")
+            $result = "d8"
         "D10" if player.DiceisEnabled["d10"]:
-            $result = player.roll("d10")
+            $result = "d10"
         "D12" if player.DiceisEnabled["d12"]:
-            $result = player.roll("d12")
+            $result = "d12"
         "D20" if player.DiceisEnabled["d20"]:
-            $result = player.roll("d20") 
+            $result = "d20" 
 return result
 
 label Special:
