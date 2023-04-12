@@ -10,10 +10,19 @@ define g = Character("???")
 # The game starts here.
 label start:
     scene black
-
     "....."
     "......."
     show GodLight at center with dissolve
+    show GodLight:
+        animation
+        anchor (-170, -190)
+        block:
+            easein 2 pos (0, 0)
+            easein 2 pos (0, -100)
+            repeat
+        
+
+
     "*Crash*"
     g "Who's there?"
     g "Ah. it's just you"
