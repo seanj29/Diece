@@ -30,7 +30,7 @@ label start:
 
     menu:
         "Go Play"("Start the Game"):
-            call fight
+            call fight from _call_fight
         "Ask more questions"("Help and Basic Controls"):
             "Not set up yet :Smile:"
         "No thank you"("Quits the game"):
@@ -116,38 +116,38 @@ label fight:
                 $player.Target(enemy)
                 $enemy.Target(player)
                 $enemy.takeTurn()
-                call Rolling 
+                call Rolling from _call_Rolling 
                 # Conditions for who's turn is first, Defenders always have priority                 
                 if enemy.state == "Defending":
-                    call enemy_defending
-                    call camreset
-                    call player_attack(result)
-                    call camreset
+                    call enemy_defending from _call_enemy_defending
+                    call camreset from _call_camreset
+                    call player_attack(result) from _call_player_attack
+                    call camreset from _call_camreset_1
                     if enemy.hp == 0:
-                        call enemy_death
+                        call enemy_death from _call_enemy_death
                         return     
                 else:
                     if player.initiative >= enemy.initiative:
-                        call player_attack(result)
-                        call camreset
+                        call player_attack(result) from _call_player_attack_1
+                        call camreset from _call_camreset_2
                         if enemy.hp == 0:
-                            call enemy_death
+                            call enemy_death from _call_enemy_death_1
                             return     
-                        call enemy_attack
-                        call camreset
+                        call enemy_attack from _call_enemy_attack
+                        call camreset from _call_camreset_3
                         if player.hp == 0:
-                            call player_death
+                            call player_death from _call_player_death
                             return
                     else:
-                        call enemy_attack
-                        call camreset
+                        call enemy_attack from _call_enemy_attack_1
+                        call camreset from _call_camreset_4
                         if player.hp == 0:
-                            call player_death
+                            call player_death from _call_player_death_1
                             return
-                        call player_attack(result)   
-                        call camreset
+                        call player_attack(result) from _call_player_attack_2   
+                        call camreset from _call_camreset_5
                         if enemy.hp == 0:
-                            call enemy_death
+                            call enemy_death from _call_enemy_death_2
                             return  
                         
              
@@ -159,25 +159,25 @@ label fight:
                 $player.Target(enemy)
                 $enemy.Target(player)
                 $enemy.takeTurn()
-                call Rolling
+                call Rolling from _call_Rolling_1
                 if enemy.state == "Defending":
                     if player.initiative >= enemy.initiative:
-                        call player_defending(result)
-                        call enemy_defending
+                        call player_defending(result) from _call_player_defending
+                        call enemy_defending from _call_enemy_defending_1
                     else:
-                        call enemy_defending
-                        call player_defending(result)
+                        call enemy_defending from _call_enemy_defending_2
+                        call player_defending(result) from _call_player_defending_1
                 else:
-                    call player_defending(result)
-                    call enemy_attack
-                    call camreset  
+                    call player_defending(result) from _call_player_defending_2
+                    call enemy_attack from _call_enemy_attack_2
+                    call camreset from _call_camreset_6  
                     if player.hp == 0:
-                            call player_death
+                            call player_death from _call_player_death_2
                             return  
             
             "Special" if player.state != "Special":
 
-                call Special
+                call Special from _call_Special
                 
 
 
@@ -319,7 +319,7 @@ label Special:
             $player.state = "Special"
             $player.Special("Double Down")
         "Enable Dice":
-            call enable_dice
+            call enable_dice from _call_enable_dice
             $player.Special("Enable Dice", dicetoenable)
         "Back":
             return
