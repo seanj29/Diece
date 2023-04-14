@@ -16,9 +16,6 @@ define config.name = _("Diece")
 
 ## Dev Mode
 
-define config.console = True
-define config.developer = "auto"
-
 ## Determines if the title given above is shown on the main menu screen. Set
 ## this to False to hide the title.
 
@@ -40,6 +37,7 @@ define config.nearest_neighbor = True
 ## triple-quotes, and leave a blank line between paragraphs.
 
 define gui.about = _p("""
+Short little demo to show the game.
 """)
 
 
