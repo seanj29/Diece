@@ -22,6 +22,19 @@ init python:
                 "d12" : False,
                 "d20" : False,
             }
+            self.EnableCost = {
+                "d4" : 5,
+                "d6" : 10,
+                "d8" : 15,
+                "d10" : 20,
+                "d12" : 25,
+                "d20" : 40,
+            }
+            self.SpecialMPCosts = {
+                "Explode" : 10,
+                "Double Down": 15,
+
+            }
             
         
         def Attack(self, DiceNo, target = None):
@@ -108,13 +121,12 @@ init python:
             dice = Dice()
             if SpecialName == "Explode":
                 self.SpecialState = "Explode"
-                self.mp -= 4
+                self.mp -= self.SpecialMPCostswitch["Explode"]
             elif SpecialName == "Double Down":
-                self.SpecialState = "Double Down"
-                self.mp -= 8
+                self.mp -= self.SpecialMPCostswitch["Explode"]
             elif SpecialName == "Enable Dice":
                 self.EnableDice(EnableDices)
-                self.mp -= dice.DiceDict[EnableDices]
+                self.mp -= self.EnableCost[EnableDices]
         
         def rollInitiative(self):
             dice = Dice()
@@ -154,8 +166,8 @@ init python:
     class Player(Actor):
 
         def __init__(self):
-            player_max_hp = 10
-            player_max_mp = 20
+            player_max_hp = 50
+            player_max_mp = 50
             super().__init__("The Guy", player_max_hp, player_max_hp, player_max_mp, player_max_mp)
             self.initiative = 20
 
@@ -170,7 +182,7 @@ init python:
     class Enemy(Actor):
       
         def __init__(self): 
-            Enemy_max_hp = 6
+            Enemy_max_hp = 30
             Enemy_max_mp = 10
             super().__init__("Enemy", Enemy_max_hp, Enemy_max_hp, Enemy_max_mp, Enemy_max_mp)
             self.initiative = 1
@@ -179,7 +191,7 @@ init python:
             dice = Dice()
             if dice.roll("d4") == 1:
                 self.state = "Defending" 
-                self.Defend("d4")    
+                self.Defend("d8")    
             else:
                 self.state = "Attacking"
 
