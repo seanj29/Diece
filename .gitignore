@@ -1,5 +1,6 @@
 /game/cache
 /game/saves
 *.txt
+!LICENSE.txt
 *.rpyc
 .vs
