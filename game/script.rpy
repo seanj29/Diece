@@ -10,6 +10,7 @@ define g = Character("???")
 # The game starts here.
 label start:
     scene black
+    play music "sounds/Alone in the Chamber.ogg"
     "....."
     "......."
     show GodLight at center with dissolve
@@ -30,6 +31,7 @@ label start:
 
     menu begin:
         "Go Play"("Start the Game"):
+            play sound "sounds/ConfirmBtnMain.ogg"
             call fight from _call_fight
         "Ask more questions"("Help and Basic Controls"):
             "Use arrow keys or mouse movement to pick menu options"
@@ -45,6 +47,7 @@ return
 label fight:
     $player.initialize()
     $enemy.initialize()
+    play music "sounds/Dark Dragon.ogg"
 
     camera:
         perspective True
