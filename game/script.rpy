@@ -34,6 +34,7 @@ label start:
         "Ask more questions"("Help and Basic Controls"):
             "Use arrow keys or mouse movement to pick menu options"
             "If you roll the highest amount on a dice, that dice then Explodes, and causes the next dice up in value to be rolled"
+            "If one player Defends, they will always move first."
             call begin 
         "No thank you"("Quits the game"):
             g "I'm saddened....."
