@@ -243,7 +243,7 @@ label enemy_attack:
 return
 
 label enemy_death:
-    play sound [ "<silence 2.5>", "sounds/Death.wav" ]
+    play sound [ "<silence 3>", "sounds/Death.wav" ]
     camera:
         easein_cubic 0.1 pos(0,0) zpos 0 rotate 0
     show Enemy Death:
@@ -252,7 +252,7 @@ label enemy_death:
 return
 
 label player_death:
-    play sound [ "<silence 1>", "sounds/Death.wav" ]
+    play sound [ "<silence 1.5>", "sounds/Death.wav" ]
     camera:
         easein_cubic 0.1 pos(0,0) zpos 0 rotate 0
     show The Guy Death:

@@ -73,6 +73,7 @@ init python:
                 if DiceThatCrit.crit == True:
                     res += self.CriticallyAttack(DiceNo, DiceThatCrit)
                 return res
+            return 0
         
 
         def Target(self, Actor):
