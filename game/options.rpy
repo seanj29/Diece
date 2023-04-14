@@ -193,6 +193,12 @@ init python:
     build.classify('**/.**', None)
     build.classify('**/#**', None)
     build.classify('**/thumbs.db', None)
+    build.classify('.vscode/**', None)
+    build.classify('game/vscode/**', None)
+    build.classify('.vscode/**', None)
+    build.classify('game/Action Editor/**', None)
+    build.classify('.gitignore', None)
+    build.classify('.gitattributes', None)
 
     ## To archive files, classify them as 'archive'.
 
