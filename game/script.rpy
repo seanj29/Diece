@@ -321,9 +321,11 @@ label Special:
         "Explode"(f"Costs {player.SpecialMPCosts['Explode']} MP") if player.mp >= player.SpecialMPCosts["Explode"]:
             $player.state = "Special"
             $player.Special("Explode")
+            play sound "sounds/ConfirmBtnMain.ogg"
         "Double Down"(f"Costs {player.SpecialMPCosts['Double Down']} MP") if player.mp >= player.SpecialMPCosts["Double Down"]:
             $player.state = "Special"
             $player.Special("Double Down")
+            play sound "sounds/ConfirmBtnMain.ogg"
         "Enable Dice":
             call enable_dice from _call_enable_dice
             $player.Special("Enable Dice", dicetoenable)
@@ -347,4 +349,5 @@ label enable_dice:
             $dicetoenable  = "d12"
         "D20"(f"Costs {player.EnableCost['d20']} MP") if player.mp >= player.EnableCost["d20"] and not player.DiceisEnabled["d20"]:
             $dicetoenable  = "d20"
+    play sound "sounds/ConfirmBtnMain.ogg"
 return dicetoenable
