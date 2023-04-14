@@ -37,9 +37,8 @@ label start:
             "Use arrow keys or mouse movement to pick menu options"
             "If you roll the highest amount on a dice, that dice then Explodes, and causes the next dice up in value to be rolled"
             "If one player Defends, they will always move first."
-            call begin from _call_begin 
+            call begin 
         "No thank you"("Quits the game"):
-            play sound "sounds/Cancel.wav"
             g "I'm saddened....."
             return
 return
@@ -214,8 +213,7 @@ label player_attack(DiceToRoll):
         ease 1 pos(0,0)
         pause 1 
 
-    show Enemy Hurt
-    play sound [ "<silence 1.5>", "sounds/Hit.wav" ]
+    show Enemy Hurt 
     $No = player.Attack(DiceToRoll)
     "You rolled a [No] and did [player.damage] damage to [player.target.name]!"
 return
@@ -238,25 +236,24 @@ label enemy_attack:
         pause 1
 
     show The Guy Hurt
-    play sound [ "<silence 2>", "sounds/Enemy_Hit.wav" ]
     "You got hit for [enemy.damage] damage??"
 return
 
 label enemy_death:
-    play sound [ "<silence 2.5>", "sounds/Death.wav" ]
     camera:
         easein_cubic 0.1 pos(0,0) zpos 0 rotate 0
     show Enemy Death:
         pause 3.5 alpha 0.0 
+
     "You win!"
 return
 
 label player_death:
-    play sound [ "<silence 1>", "sounds/Death.wav" ]
     camera:
         easein_cubic 0.1 pos(0,0) zpos 0 rotate 0
     show The Guy Death:
         pause 1.5 alpha 0.0 
+
     "Damn...."
 return
 
@@ -333,7 +330,6 @@ label Special:
             call enable_dice from _call_enable_dice
             $player.Special("Enable Dice", dicetoenable)
         "Back":
-            play sound "sounds/Cancel.wav"
             return
         
 return

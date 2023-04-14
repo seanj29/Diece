@@ -121,9 +121,9 @@ init python:
             dice = Dice()
             if SpecialName == "Explode":
                 self.SpecialState = "Explode"
-                self.mp -= self.SpecialMPCostswitch["Explode"]
+                self.mp -= self.SpecialMPCosts["Explode"]
             elif SpecialName == "Double Down":
-                self.mp -= self.SpecialMPCostswitch["Explode"]
+                self.mp -= self.SpecialMPCosts["Explode"]
             elif SpecialName == "Enable Dice":
                 self.EnableDice(EnableDices)
                 self.mp -= self.EnableCost[EnableDices]
