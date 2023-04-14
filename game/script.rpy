@@ -10,6 +10,7 @@ define g = Character("???")
 # The game starts here.
 label start:
     scene black
+    play music "sounds/Alone in the Chamber.ogg"
     "....."
     "......."
     show GodLight at center with dissolve
@@ -28,11 +29,15 @@ label start:
     g "Ah. it's just you"
     g "Well, are you not going to play?" 
 
-    menu:
+    menu begin:
         "Go Play"("Start the Game"):
+            play sound "sounds/ConfirmBtnMain.ogg"
             call fight from _call_fight
         "Ask more questions"("Help and Basic Controls"):
-            "Not set up yet :Smile:"
+            "Use arrow keys or mouse movement to pick menu options"
+            "If you roll the highest amount on a dice, that dice then Explodes, and causes the next dice up in value to be rolled"
+            "If one player Defends, they will always move first."
+            call begin 
         "No thank you"("Quits the game"):
             g "I'm saddened....."
             return
@@ -42,6 +47,7 @@ return
 label fight:
     $player.initialize()
     $enemy.initialize()
+    play music "sounds/Dark Dragon.ogg"
 
     camera:
         perspective True
@@ -213,7 +219,7 @@ label player_attack(DiceToRoll):
 return
 
 label enemy_attack:
-    $enemy.Attack("d4")
+    $enemy.Attack("d10")
     camera:
         pause 0.1
         easeout_elastic 0.8 pos (-432, 0) zpos -603.0 rotate -3.0 
@@ -312,12 +318,14 @@ return result
 
 label Special:
     menu:
-        "Explode"("Costs 4 MP") if player.mp > 4:
+        "Explode"(f"Costs {player.SpecialMPCosts['Explode']} MP") if player.mp >= player.SpecialMPCosts["Explode"]:
             $player.state = "Special"
             $player.Special("Explode")
-        "Double Down"("Costs 8 MP") if player.mp > 8:
+            play sound "sounds/ConfirmBtnMain.ogg"
+        "Double Down"(f"Costs {player.SpecialMPCosts['Double Down']} MP") if player.mp >= player.SpecialMPCosts["Double Down"]:
             $player.state = "Special"
             $player.Special("Double Down")
+            play sound "sounds/ConfirmBtnMain.ogg"
         "Enable Dice":
             call enable_dice from _call_enable_dice
             $player.Special("Enable Dice", dicetoenable)
@@ -329,16 +337,17 @@ return
 label enable_dice:
 
     menu:
-        "D4"("Costs 4 MP") if player.mp >= 4 and not player.DiceisEnabled["d4"]: 
+        "D4"(f"Costs {player.EnableCost['d4']} MP") if player.mp >= player.EnableCost["d4"] and not player.DiceisEnabled["d4"]: 
             $dicetoenable = "d4"
-        "D6"("Costs 6 MP")  if player.mp >= 6 and not player.DiceisEnabled["d6"]: 
+        "D6"(f"Costs {player.EnableCost['d6']} MP")  if player.mp >= player.EnableCost["d6"] and not player.DiceisEnabled["d6"]: 
             $dicetoenable = "d6"
-        "D8"("Costs 8 MP") if player.mp >= 8 and not player.DiceisEnabled["d8"]: 
+        "D8"(f"Costs {player.EnableCost['d8']} MP") if player.mp >= player.EnableCost["d8"] and not player.DiceisEnabled["d8"]: 
             $dicetoenable  = "d8"
-        "D10"("Costs 10 MP") if player.mp >= 10 and not player.DiceisEnabled["d10"]:
+        "D10"(f"Costs {player.EnableCost['d10']} MP") if player.mp >= player.EnableCost["d10"] and not player.DiceisEnabled["d10"]:
             $dicetoenable = "d10"
-        "D12"("Costs 12 MP") if player.mp >= 12 and not player.DiceisEnabled["d12"]:
+        "D12"(f"Costs {player.EnableCost['d12']} MP") if player.mp >= player.EnableCost["d12"] and not player.DiceisEnabled["d12"]:
             $dicetoenable  = "d12"
-        "D20"("Costs 20 MP") if player.mp >= 20 and not player.DiceisEnabled["d20"]:
+        "D20"(f"Costs {player.EnableCost['d20']} MP") if player.mp >= player.EnableCost["d20"] and not player.DiceisEnabled["d20"]:
             $dicetoenable  = "d20"
+    play sound "sounds/ConfirmBtnMain.ogg"
 return dicetoenable
