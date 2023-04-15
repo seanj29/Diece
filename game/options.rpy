@@ -210,6 +210,7 @@ init python:
 
     build.documentation('*.html')
     build.documentation('*.txt')
+    build.itch_project = "seanj29/diece-student-project"
 
 
 ## A Google Play license key is required to download expansion files and perform
